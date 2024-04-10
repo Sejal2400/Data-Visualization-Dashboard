@@ -1,0 +1,46 @@
+{% include 'base/header.html' %}
+{% block content %}
+
+
+  
+  <table  id="datatable" class="table">
+    <thead class="thead-light">
+      <tr>
+        <th>Year</th>
+        <th>Country</th>
+        <th>Region</th>
+        <th>city</th>
+        <th>Intensity</th>
+        <th>Likelihood</th>
+        <th>Relevance</th>
+        <th>Topic</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for data in Datatable %}
+        <tr>
+            <td>{{ data.end_year }}</td>
+            <td>{{ data.country }}</td>
+            <td>{{ data.region }}</td>
+            <td>{{ data.city }}</td>
+            <td>{{ data.intensity }}</td>
+            <td>{{ data.likelihood }}</td>
+            <td>{{ data.relevance }}</td>
+            <td>{{ data.topic }}</td>
+
+        </tr>
+      {% endfor %}
+     
+    </tbody>
+  </table>
+  <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    
+<script>
+
+
+  $(document).ready( function () {
+       $('#datatable').DataTable();
+      } );
+
+</script>
+{% endblock %}

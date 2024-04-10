@@ -1,0 +1,582 @@
+{% include 'base/header.html' %}
+{% load static %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+     
+<div class="ecommerce-widget">
+  <div class="row">
+    <!-- ============================================================== -->
+    <!-- sales  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Countries</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">{{ country_count }}</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"></span><span class="ml-1"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end sales  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- new customer  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Regions</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">{{ region_count }}</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"></span><span class="ml-1"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end new customer  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- visitor  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Topics</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">{{ topic_count }}</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"></span><span class="ml-1"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end visitor  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- total orders  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Total Data</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">{{ data_count }}</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-danger font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-danger bg-danger-light bg-danger-light "></span><span class="ml-1"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end total orders  -->
+    <!-- ============================================================== -->
+</div>
+
+
+    
+
+
+  <div class="row">
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="text-muted">Avg Intensity</h5>
+                  <div class="metric-value d-inline-block">
+                      <h1 class="mb-1"></h1>
+                  </div>
+                  <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                      <span><i class="fa fa-fw fa-arrow-up"></i></span><span></span>
+                  </div>
+              </div>
+              <div id="sparkline-revenue">
+                <canvas id="Avg_intensity"  data-url="{% url 'chart_data' %}"></canvas>
+                <script>
+                        $(function () {
+
+                        var $populationChart = $("#Avg_intensity");
+                        $.ajax({
+                        url: $populationChart.data("url"),
+                        success: function (data) {
+
+                            var ctx = $populationChart[0].getContext("2d");
+
+                            new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: data.int_lables,
+                                datasets: [{
+                                label: 'Intensity',
+                                backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                                'rgb(255 122 127 / .2)','#84ABCE','#6B9E67','#F61B6C'
+                                ],
+                                data: data.int_data
+                                }]          
+                            },
+                            options: {
+                                responsive: true,
+                                legend: {
+                                position: 'top',
+                                },
+                                title: {
+                                display: true,
+                                text: 'Avg Intensity Chart'
+                                }
+                            }
+                            });
+
+                        }
+                        });
+
+                        });
+              
+                </script>
+              </div>
+          </div>
+      </div>
+      <div class="col-xl-4 col-lg- col-md-6 col-sm-12 col-12">
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="text-muted">Year</h5>
+                  <div class="metric-value d-inline-block">
+                      <h1 class="mb-1"></h1>
+                  </div>
+                  <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                      <span></span><span></span>
+                  </div>
+              </div>
+              <div id="sparkline-revenue2">
+                <canvas  id="year"  data-url="{% url 'chart_data' %}"></canvas>
+              </div>
+          </div>
+      </div>
+      <script>
+        $(function () {
+       
+       var $populationChart = $("#year");
+       $.ajax({
+         url: $populationChart.data("url"),
+         success: function (data) {
+       
+           var ctx = $populationChart[0].getContext("2d");
+       
+           new Chart(ctx, {
+             type: 'line',
+             data: {
+               labels: data.year,
+               datasets: [{
+                 label: 'Year',
+                 backgroundColor: [
+                 'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(255 122 127 / .2)','#84ABCE','#6B9E67','#F61B6C'
+               ],
+                 data: data.yr_count
+               }]          
+             },
+             options: {
+               responsive: true,
+               legend: {
+                 position: 'top',
+               },
+               title: {
+                 display: true,
+                 text: 'Year chart'
+               }
+             }
+           });
+       
+         }
+       });
+       
+       });
+                
+       
+    </script>
+    <div class="col-xl-4 col-lg- col-md-6 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="text-muted">Relevance</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1"></h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                    <span></span><span></span>
+                </div>
+            </div>
+            <div id="sparkline-revenue2">
+              <canvas  id="relevance"  data-url="{% url 'chart_data' %}"></canvas>
+            </div>
+        </div>
+    </div>
+    <script>
+      $(function () {
+     
+     var $populationChart = $("#relevance");
+     $.ajax({
+       url: $populationChart.data("url"),
+       success: function (data) {
+     
+         var ctx = $populationChart[0].getContext("2d");
+     
+         new Chart(ctx, {
+           type: 'line',
+           data: {
+             labels: data.rel_country,
+             datasets: [{
+               label: 'Relevance',
+               backgroundColor: [
+               'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 205, 86)',
+              'rgb(255 122 127 / .2)','#84ABCE','#6B9E67','#F61B6C',
+              'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)', 'rgb(255, 99, 132)',
+                'rgb(255 122 127 / .2)','#84ABCE','#6B9E67','#F61B6C',
+                '#D87FD2','#86A9D7','#54979A',
+             ],
+               data: data.relevance,
+               fill: false,
+               borderColor: 'rgb(75, 192, 192)',
+             }]          
+           },
+           options: {
+             responsive: true,
+             legend: {
+               position: 'top',
+             },
+             title: {
+               display: true,
+               text: 'Avg Relevance Chart'
+             }
+           }
+         });
+     
+       }
+     });
+     
+     });
+              
+     
+  </script>
+</div>
+
+<div class="row">
+    
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="text-muted"> Region Likelihood</h5>
+                  <div class="metric-value d-inline-block">
+                      <h1 class="mb-1"></h1>
+                  </div>
+                  <div class="metric-label d-inline-block float-right text-primary font-weight-bold">
+                      <span></span>
+                  </div>
+              </div>
+              <div id="sparkline-revenue3">
+                <canvas id="likelihood"   data-url="{% url 'chart_data' %}"></canvas>
+              </div>
+          </div>
+      </div>
+      <script>
+         $(function () {
+       
+       var $populationChart = $("#likelihood");
+       $.ajax({
+         url: $populationChart.data("url"),
+         success: function (data) {
+       
+           var ctx = $populationChart[0].getContext("2d");
+       
+           new Chart(ctx, {
+             type: 'bar',
+             data: {
+               labels: data.region,
+               datasets: [{
+                 label: 'likelihood',
+                 backgroundColor: [
+                 'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(255 122 127 / .2)','#84ABCE','#6B9E67','#F61B6C',
+                '#D87FD2','#86A9D7','#54979A','#F8FD6C',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)', 'rgb(255, 99, 132)',
+                'rgb(255 122 127 / .2)','#84ABCE','#6B9E67','#F61B6C',
+                '#D87FD2','#86A9D7','#54979A','#009999'
+               ],
+                 data: data.likelihood,
+                 fill:false
+               }]          
+             },
+             options: {
+               responsive: true,
+               legend: {
+                 position: 'top',
+               },
+               title: {
+                 display: true,
+                 text: 'Avg Likelihood Chart'
+               }
+             }
+           });
+       
+         }
+       });
+       
+       });
+      </script>
+      
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="text-muted">Topic</h5>
+                  <div class="metric-value d-inline-block">
+                      <h1 class="mb-1"></h1>
+                  </div>
+                  <div class="metric-label d-inline-block float-right text-secondary font-weight-bold">
+                      <span></span>
+                  </div>
+              </div>
+              <div id="sparkline-revenue4">
+                <canvas id="topic" data-url="{% url 'chart_data' %}"></canvas>
+              </div>
+          </div>
+      </div>
+  
+    <script>
+        $(function () {
+       
+       var $populationChart = $("#topic");
+       $.ajax({
+         url: $populationChart.data("url"),
+         success: function (data) {
+       
+           var ctx = $populationChart[0].getContext("2d");
+       
+           new Chart(ctx, {
+             type: 'line',
+             data: {
+               labels: data.topic,
+               datasets: [{
+                 label: 'Topics',
+                 backgroundColor: [
+                 'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(255 122 127 / .2)','#84ABCE','#6B9E67','#F61B6C',
+                '#D87FD2','#86A9D7','#54979A','#F8FD6C',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)', 'rgb(255, 99, 132)',
+                'rgb(255 122 127 / .2)','#84ABCE','#6B9E67','#F61B6C',
+                '#D87FD2','#86A9D7','#54979A',
+               ],
+                 data: data.count_topic,
+                 fill:false,
+                 borderColor:'#FF6666'
+               }]          
+             },
+             options: {
+               responsive: true,
+               legend: {
+                 position: 'top',
+               },
+               title: {
+                 display: true,
+                 text: 'Avg Topic Chart'
+               }
+             }
+           });
+        }
+       });
+       
+       });
+    </script>
+  </div>
+
+      <!-- ============================================================== -->
+
+      <!-- ============================================================== -->
+
+                    <!-- recent orders  -->
+      <!-- ============================================================== -->
+      <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
+          <div class="card" style="width: 1800px;">
+              <h2 class="card-header">DataTable</h2>
+              <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table id="mydatatable" style="color:black ;" class="display">
+                      <thead style="color: rgb(2, 7, 10);" >
+                          <tr>
+                              <th>Year</th>
+                              <th>Country</th>
+                              <th>Region</th>
+                              <th>city</th>
+                              <th>Intensity</th>
+                              <th>Likelihood</th>
+                              <th>Relevance</th>
+                              <th>Topic</th>
+              
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for data in Datatable %}
+                          <tr>
+                              <td>{{ data.end_year }}</td>
+                              <td>{{ data.country }}</td>
+                              <td>{{ data.region }}</td>
+                              <td>{{ data.city }}</td>
+                              <td>{{ data.intensity }}</td>
+                              <td>{{ data.likelihood }}</td>
+                              <td>{{ data.relevance }}</td>
+                              <td>{{ data.topic }}</td>
+              
+                          </tr>
+                        {% endfor %}
+                         
+                      </tbody>
+                  </table>
+                  </div>
+              </div>
+          </div>
+          <!-- ============================================================== -->
+          <!-- end top perfomimg  -->
+          <!-- ============================================================== -->
+      </div>
+  </div>
+
+  <!--  -->
+      <!-- ============================================================== -->
+
+      
+  <div class="row">
+      <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12 col-12">
+          <!-- ============================================================== -->
+          <!-- social source  -->
+          <!-- ============================================================== -->
+          <div class="card">
+              <h5 class="card-header">  Social Source</h5>
+              <div class="card-body p-0">
+                  <ul class="social-sales list-group list-group-flush">
+                      <li class="list-group-item social-sales-content"><span class="social-sales-icon-circle facebook-bgcolor mr-2"><i class="fab fa-facebook-f"></i></span><span class="social-sales-name">Facebook</span><span class="social-sales-count text-dark">120 Sales</span>
+                      </li>
+                      <li class="list-group-item social-sales-content"><span class="social-sales-icon-circle twitter-bgcolor mr-2"><i class="fab fa-twitter"></i></span><span class="social-sales-name">Twitter</span><span class="social-sales-count text-dark">99 Sales</span>
+                      </li>
+                      <li class="list-group-item social-sales-content"><span class="social-sales-icon-circle instagram-bgcolor mr-2"><i class="fab fa-instagram"></i></span><span class="social-sales-name">Instagram</span><span class="social-sales-count text-dark">76 Sales</span>
+                      </li>
+                      <li class="list-group-item social-sales-content"><span class="social-sales-icon-circle pinterest-bgcolor mr-2"><i class="fab fa-pinterest-p"></i></span><span class="social-sales-name">Pinterest</span><span class="social-sales-count text-dark">56 Sales</span>
+                      </li>
+                      <li class="list-group-item social-sales-content"><span class="social-sales-icon-circle googleplus-bgcolor mr-2"><i class="fab fa-google-plus-g"></i></span><span class="social-sales-name">Google Plus</span><span class="social-sales-count text-dark">36 Sales</span>
+                      </li>
+                  </ul>
+              </div>
+              
+          </div>
+          <!-- ============================================================== -->
+          <!-- end social source  -->
+          <!-- ============================================================== -->
+      </div>
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
+          <!-- ============================================================== -->
+          <!-- sales traffice source  -->
+          <!-- ============================================================== -->
+          <div class="card">
+              <h5 class="card-header"> No of Data By Topics</h5>
+              <div class="card-body p-0">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Topics</th>
+                        <th scope="col">No of data</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in topic_query %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ data.topic }}</td>
+                        <td>{{ data.dcount }}</td>
+                        
+                      </tr>
+                      {% endfor %}
+                     
+                    </tbody>
+                  </table>
+              </div>
+             
+          </div>
+      </div>
+      <!-- ============================================================== -->
+      <!-- end sales traffice source  -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- sales traffic country source  -->
+      <!-- ============================================================== -->
+      <div class="col-xl-3 col-lg-12 col-md-6 col-sm-12 col-12">
+          <div class="card">
+              <h5 class="card-header"> No of data By Country</h5>
+              <div class="card-body p-0">
+                  
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">No of data</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in country_query %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ data.country }}</td>
+                        <td>{{ data.dcount }}</td>
+                        
+                      </tr>
+                      {% endfor %}
+                     
+                    </tbody>
+                  </table>
+              </div>
+              
+          </div>
+      </div>
+      <!-- ============================================================== -->
+      <!-- end sales traffice country source  -->
+      <!-- ============================================================== -->
+  </div>
+</div>
+</div>
+</div>
+
+<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    
+<script>
+
+
+  $(document).ready( function () {
+       $('#mydatatable').DataTable();
+      } );
+
+</script>
+{% endblock %}
+  
